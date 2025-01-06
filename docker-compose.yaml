@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  teapot:
+    image: cooldockerizer93/teapot
+    ports:
+      - "7983:7983" # Expose the port of your preference
+    runtime: sysbox-runc
+    volumes:
+      - "./credentials:/app/credentials"
+      - "./downloads:/app/downloads" # Change "./downloads" with your music library directory
