@@ -25,7 +25,7 @@ Because I found that when running multiple instances of orpheusdl (in order to h
 
 ## What about security?
 
-Don't worry, it uses the most secure aproach to DinD, which is [Sysbox](https://github.com/nestybox/sysbox). Containers created using this runtime can have their own, isolated-from-host's docker daemon, so no --privileged flag and no mounting the host's docker daemon to the container or other security nightmares
+Don't worry, it uses the most secure aproach to DinD, which is [Sysbox](https://github.com/nestybox/sysbox). Containers created using this runtime can have their own, isolated-from-host's docker daemon, so no --privileged flag, no mounting the host's docker daemon to the container nor other security nightmares.
 
 
 ## Docker Setup
