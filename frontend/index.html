@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teapot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main-container">
+        <!-- Contenido principal -->
+        <div class="content">
+            <div class="container">
+                <h1>Teapot</h1>
+                <form id="searchForm">
+                    <label for="module">Module:</label>
+                    <select id="module" required>
+                        <option value="deezer">Deezer</option>
+                        <option value="tidal">Tidal</option>
+                    </select>
+                    
+                    <label for="type">Type:</label>
+                    <select id="type" required>
+                        <option value="album">Album</option>
+                        <option value="track">Track</option>
+                    </select>
+                    
+                    <label for="query">Query:</label>
+                    <input type="text" id="query" placeholder="Enter search term" required>
+                    
+                    <button type="submit">Go!</button>
+                </form>
+
+                <div id="results">
+                    <!-- Los resultados aparecerán aquí -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Cola de descargas -->
+        <div class="download-menu">
+            <h2>Download Queue</h2>
+            <div id="downloadQueue">
+                <!-- La cola de descargas aparecerá aquí -->
+            </div>
+        </div>
+    </div>
+    <script src="./scripts/load_modules.js"></script>
+    <script src="./scripts/orpheus.js" type="module"></script>
+    <script src="./scripts/zotify.js" type="module"></script>
+</body>
+</html>

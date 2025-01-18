@@ -1,0 +1,109 @@
+const baseUrl = window.location.origin; // Base URL is derived from the origin of the loaded frontend.
+
+// Function to handle download requests and update the download queue
+async function handleDownloadRequest(module, type, query) {
+    if (!module.startsWith("spotify")) {
+        alert("Currently, only Spotify modules are supported.");
+        return;
+    }
+
+    const account = module.split(" ")[1]; // Extract the account part (e.g., 'MX' from 'spotify MX')
+    const endpoint = `${baseUrl}/zotify/download/${type}?url=${encodeURIComponent(query)}&account=${account}`;
+
+    // Create a container for the download in the queue
+    const queueContainer = document.getElementById("downloadQueue");
+    const downloadItem = document.createElement("div");
+    downloadItem.classList.add("result-card");
+    downloadItem.innerHTML = `
+        <h3>Loading...</h3>
+        <p><strong>Status:</strong> Waiting for API response...</p>
+    `;
+    queueContainer.appendChild(downloadItem);
+
+    let albumTitle = null;
+    let artistName = null;
+    let totalTracks = 0;
+    let downloadedTracks = 0;
+
+    try {
+        const response = await fetch(endpoint);
+
+        if (!response.body) {
+            throw new Error("Response body is missing.");
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let messageBuffer = "";
+
+        // Initialize progress bar
+        downloadItem.innerHTML = `
+            <h3>Loading...</h3>
+            <p><strong>Artist:</strong> Loading...</p>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 0%;"></div>
+            </div>
+        `;
+
+        const progressBar = downloadItem.querySelector(".progress-bar");
+
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break; // Stop the loop if the stream is done
+
+            // Decode the chunk and append to the buffer
+            messageBuffer += decoder.decode(value, { stream: true });
+
+            // Split buffer into complete lines
+            const lines = messageBuffer.split("\n");
+            messageBuffer = lines.pop() || ""; // Retain the last partial line, if any
+
+            for (const line of lines) {
+                if (!line.startsWith("data:")) continue; // Skip lines that don't start with 'data:'
+
+                const cleanMessage = line.slice(5).trim(); // Remove 'data:' prefix
+                try {
+                    const data = JSON.parse(cleanMessage);
+
+                    // Handle album and artist information
+                    if (data.album) albumTitle = data.album;
+                    if (data.artist) artistName = data.artist;
+
+                    // Update the UI with album and artist information if available
+                    if (albumTitle && artistName) {
+                        downloadItem.querySelector("h3").innerText = albumTitle;
+                        downloadItem.querySelector("p").innerHTML = `<strong>Artist:</strong> ${artistName}`;
+                    }
+
+                    // Update total and downloaded tracks for progress bar
+                    if (data.downloaded !== undefined && data.total !== undefined) {
+                        downloadedTracks = data.downloaded;
+                        totalTracks = data.total;
+
+                        const progressPercentage = Math.floor((downloadedTracks / totalTracks) * 100);
+                        progressBar.style.width = `${progressPercentage}%`;
+
+                        if (progressPercentage === 100) {
+                            progressBar.classList.add("complete");
+                        }
+                    }
+                } catch (err) {
+                    console.error("Failed to parse message:", cleanMessage, err);
+                }
+            }
+        }
+
+        // Process any remaining data in the buffer
+        if (messageBuffer.trim()) {
+            console.warn("Unprocessed final buffer:", messageBuffer);
+        }
+    } catch (error) {
+        console.error("Error during download:", error);
+        downloadItem.innerHTML = `
+            <h3>Error</h3>
+            <p><strong>Details:</strong> ${error.message}</p>
+        `;
+    }
+}
+
+export { handleDownloadRequest };

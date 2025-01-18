@@ -1,0 +1,271 @@
+/* Configuración general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0d0d0d; /* Fondo más oscuro */
+    color: #d0d0d0; /* Texto ligeramente más oscuro */
+}
+
+/* Diseño principal con flexbox */
+.main-container {
+    display: flex;
+    flex-direction: row;
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+}
+
+/* Contenido principal */
+.content {
+    flex: 3;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* Scrollbar estilizada */
+.content::-webkit-scrollbar, 
+.download-menu::-webkit-scrollbar, 
+#downloadQueue::-webkit-scrollbar {
+    width: 10px; /* Ancho del scrollbar */
+}
+
+.content::-webkit-scrollbar-track, 
+.download-menu::-webkit-scrollbar-track, 
+#downloadQueue::-webkit-scrollbar-track {
+    background: #181818; /* Fondo del track del scrollbar */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.content::-webkit-scrollbar-thumb, 
+.download-menu::-webkit-scrollbar-thumb, 
+#downloadQueue::-webkit-scrollbar-thumb {
+    background: #75559B; /* Color principal */
+    border-radius: 10px; /* Bordes redondeados */
+    border: 2px solid #181818; /* Espaciado entre el thumb y el track */
+}
+
+.content::-webkit-scrollbar-thumb:hover, 
+.download-menu::-webkit-scrollbar-thumb:hover, 
+#downloadQueue::-webkit-scrollbar-thumb:hover {
+    background: #60448A; /* Color principal ligeramente más oscuro */
+}
+
+.content::-webkit-scrollbar-corner {
+    background: #0d0d0d; /* Color del espacio entre tracks */
+}
+
+/* Compatibilidad con Firefox */
+.content, .download-menu, #downloadQueue {
+    scrollbar-width: thin; /* Scrollbar delgado */
+    scrollbar-color: #75559B #181818; /* Thumb y track */
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: #181818; /* Fondo más oscuro para el contenedor */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+}
+
+/* Cola de descargas (a la derecha) */
+.download-menu {
+    flex: 1;
+    background-color: #181818;
+    border-left: 1px solid #292929;
+    padding: 20px;
+    overflow-y: auto;  /* Keep vertical scroll */
+    overflow-x: auto;  /* Add horizontal scroll if content overflows */
+    max-width: 400px; /* Or a width that suits your layout */
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.7);
+}
+
+.download-menu h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #ffffff; /* Títulos claros */
+}
+
+#downloadQueue {
+    max-height: calc(100vh - 80px); /* Altura dinámica */
+}
+
+/* Barra de progreso */
+.progress-bar {
+    height: 20px;
+    background-color: #75559B; /* Color principal */
+    color: #0d0d0d; /* Texto oscuro sobre fondo claro */
+    text-align: center;
+    line-height: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.progress-bar-error {
+    background-color: #c62828; /* Rojo más oscuro para error */
+}
+
+.progress-bar-complete {
+    background-color: #75559B; /* Color principal */
+    font-weight: bold;
+}
+
+/* Botones y formularios */
+input, select, button {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background-color: #181818;
+    color: #d0d0d0;
+    width: 100%;
+}
+
+button {
+    background-color: #75559B; /* Color principal */
+    color: #0d0d0d; /* Texto oscuro */
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background-color: #60448A; /* Color principal ligeramente más oscuro */
+}
+
+/* Contenedor de resultados */
+.result-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+    grid-auto-rows: auto;
+    gap: 20px; /* Espaciado uniforme entre tarjetas */
+    max-width: 1200px; /* Limita el ancho para pantallas grandes */
+    margin: 0 auto; /* Centra el contenedor en la página */
+    padding: 20px; /* Espaciado interior del contenedor */
+}
+
+/* Estilos de tarjeta */
+.result-card {
+    background: #181818;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    text-align: center;
+}
+
+/* Botón dentro de cada tarjeta */
+.result-card .download-btn {
+    background-color: #75559B; /* Color principal */
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.result-card .download-btn:hover {
+    background-color: #60448A; /* Color principal ligeramente más oscuro */
+}
+
+/* Diseño responsivo */
+@media (max-width: 768px) {
+    .result-container {
+        grid-template-columns: 1fr; /* Una columna para dispositivos pequeños */
+    }
+}
+
+@media (max-width: 480px) {
+    .result-card {
+        width: calc(100% - 20px); /* Una tarjeta por fila */
+    }
+}
+
+/* Botón de reintento */
+.retry-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #c62828; /* Rojo más oscuro */
+    color: #0d0d0d; /* Texto oscuro */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.retry-btn:hover {
+    background-color: #b71c1c;
+}
+
+/* Estilo base para los campos de entrada */
+input[type="text"], input[type="url"], select {
+    width: calc(100% - 20px); /* Ajusta el ancho */
+    padding: 10px;
+    margin: 10px auto; /* Márgenes consistentes */
+    border: 1px solid #333; /* Bordes oscuros */
+    border-radius: 4px;
+    background-color: #181818; /* Fondo oscuro */
+    color: #d0d0d0; /* Texto claro */
+    display: block;
+    box-sizing: border-box; /* Incluye padding y borde en el ancho */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease; /* Transición suave */
+}
+
+/* Estilo para el estado enfocado (focus) */
+input[type="text"]:focus, input[type="url"]:focus, select:focus {
+    outline: none; /* Elimina el contorno predeterminado del navegador */
+    border-color: #75559B; /* Color del borde enfocado */
+    box-shadow: 0 0 5px rgba(117, 85, 155, 0.8); /* Sombra en color principal */
+    background-color: #202020; /* Fondo más oscuro al enfocar */
+}
+
+/* Evita que el texto del campo cambie su estilo al enfocarse */
+input[type="text"]::placeholder, input[type="url"]::placeholder {
+    color: #888; /* Color del placeholder en modo oscuro */
+}
+
+/* Estilo para el estado activo */
+input[type="text"]:active, input[type="url"]:active, select:active {
+    background-color: #202020; /* Fondo consistente */
+    border-color: #75559B; /* Mantén el borde en color principal */
+}
+
+/* Dropdown menu */
+select option:hover {
+    background-color: #60448A; /* Color suave para el hover de las opciones */
+    color: #ffffff; /* Texto claro en opciones */
+}
+
+/* Estilo para las opciones del dropdown */
+select {
+    background-color: #181818; /* Fondo oscuro */
+    color: #d0d0d0; /* Texto claro */
+    border: 1px solid #333; /* Bordes oscuros */
+    border-radius: 4px;
+    padding: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Hover sobre el dropdown */
+select:hover {
+    border-color: #75559B; /* Borde en el color principal */
+    background-color: #202020; /* Fondo más oscuro */
+}
+
+/* Opciones del dropdown */
+select option {
+    background-color: #181818; /* Fondo oscuro de las opciones */
+    color: #d0d0d0; /* Texto claro */
+    padding: 5px;
+}
+
+/* Hover en las opciones */
+select option:hover {
+    background-color: #60448A; /* Fondo con el color principal más oscuro */
+    color: #ffffff; /* Texto completamente blanco */
+}
+
+button[type="submit"] {
+    color: #ffffff; /* Texto blanco */
+}
