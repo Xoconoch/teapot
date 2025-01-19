@@ -5,9 +5,6 @@ from app.orpheus import orpheus_blueprint
 from app.zotify import zotify_blueprint
 from app.utils import check_blueprint
 
-# Cargar variables de entorno
-load_dotenv()
-
 # Crear y configurar la aplicación
 app = create_app()
 
@@ -33,4 +30,4 @@ if __name__ == "__main__":
     port = int(os.getenv("FLASK_PORT", 7983))
 
     # Ejecutar el servidor en modo de desarrollo
-    app.run(host=host, port=port, debug=os.getenv("FLASK_DEBUG", "True") == "True")
+    app.run(host=host, port=port)
