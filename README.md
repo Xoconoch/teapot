@@ -118,3 +118,7 @@ So basically you need to follow [this beautiful repository](https://github.com/d
 - Rename `"auth_data"` to `"credentials"` 
 
 Once you do that, you need to go where your docker-compose.yaml is and create the file `./credentials/spotify/{account_custom_name}/credentials.json` and paste the same contents as the `credentials.json` you modified previously on your PC/laptop.
+
+## Build your own docker image
+
+First, build the images for zotify and orpheusdl using their corresponding directories under builds/, then put them inside the root directory of the project (where the main Dockerfile is located) and just build the image normally.
